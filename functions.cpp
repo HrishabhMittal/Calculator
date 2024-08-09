@@ -65,7 +65,7 @@ int factorial(int s) {
     return out;
 }
 double sin(double x) {
-    x=rem(x,TWO_PI);
+    x=rem(x+PI,TWO_PI)-PI;
     double out=0.0;
     for (int i=0;i<5;i++) {
         if (i&1) out-=pow(x,2*i+1)/(double)(factorial(2*i+1));
@@ -74,7 +74,7 @@ double sin(double x) {
     return out;
 }
 double cos(double x) {
-    x=rem(x,TWO_PI);
+    x=rem(x+PI,TWO_PI)-PI;
     double out=0.0;
     for (int i=0;i<5;i++) {
         if (i&1) {
