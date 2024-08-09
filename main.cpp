@@ -2,8 +2,12 @@
 
 int main() {
     string s;
-    getline(cin,s);
-    double d;
-    if (evalExpression(s,d)) cout << d << endl;
-    else cout << "invalid" << endl;
+    while (true) {
+        cout << ">>";
+        getline(cin,s);
+        if (s=="exit") break;
+        double d;
+        if (evalExpression(s,d)) cout << ">>" << d << endl;
+        else cout << "invalid expression" << endl;
+    }
 }
