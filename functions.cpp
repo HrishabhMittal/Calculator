@@ -10,52 +10,48 @@ double rem(double i, double j) {
     }
     return i;
 }
-double fract(double d) {
-    return d-(double)((long long)d);
-}
 double pow(double x,int y) {
     double out=1.0;
     for (int i=0;i<y;i++) out*=x;
     return out;
 }
-double pow(double x,double y) {
-    double out=1.0;
-    bool negative=false;
-    if (y<0.0) {
-        y*=-1.0;
-        negative=true;
+double ln(double x) {
+    if (x <= 0) {
+        return 0;
     }
-    out=pow(x,((int)y));
-    // using basic approximation
-    if (y!=0.0) {
-        y=fract(y);
-        double lower=x>1.0?1.0:x;
-        double upper=x<=1.0?1.0:x;
-        double middle=(lower+upper)/2;
-        double d=1.0;
-        while (fract(y)>0.00001) {
-            d*=10.0;
-            y*=10.0;
-        }
-        double pp=pow(x,((int)y));
-        while (upper-lower>0.000001) {
-            middle=(lower+upper)/2;
-            double ppp=pow(middle,((int)d));
-            if (ppp>pp) {
-                upper=middle;
-            } else lower=middle;
-        }
-        out*=middle;
+    double lnb=0.0;
+    double term=(x-1)/(x+1);
+    double termsq=term*term;
+    double curterm=term;
+    double factor=1.0;
+    for (int i=1;i<1000;i+=2) {
+        lnb+=curterm/i;
+        curterm*=termsq;
     }
-    if (!negative) return out;
-    else return 1/out;
+    lnb*=2;
+    return lnb;
+}
+double pow(double base, double exponent) {
+    if (base == 0.0) {
+        return 0.0;
+    }
+    double lnb=ln(base);
+    double result=1.0;
+    double power=exponent*lnb;
+    double factorial=1.0;
+    double pterm= power;
+    int n=1;
+    while (n<100) {
+        result+=pterm/factorial;
+        n++;
+        pterm*=power;
+        factorial*=n;
+    }
+    return result;
 }
 double log(double x,double base) {
     // ln(x)=(x^h-1)/h when h->0
-    return (pow(x,0.0005)-1)/(pow(base,0.0005)-1);
-}
-double ln(double x) {
-    return (pow(x,0.00001)-1)/0.00001;
+    return ln(x)/ln(base);
 }
 int factorial(int s) {
     int out=1;
